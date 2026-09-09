@@ -27,6 +27,9 @@ npm run lint     # oxlint
 
 ## Banque de questions
 
-Les questions sont réparties par niveau dans `src/data/levels1-10.ts`, `levels11-20.ts` et `levels21-30.ts`
-(agrégées par `src/data/index.ts`). Chaque niveau contient actuellement 15 questions ; le format
-(`src/data/builder.ts`, type `Row`) permet d'en ajouter facilement pour se rapprocher des 100 questions par niveau visées à terme.
+**3000 questions au total : 30 niveaux × 100 questions.**
+
+Chaque niveau combine 15 questions historiques dans `src/data/levels1-10.ts`, `levels11-20.ts` et
+`levels21-30.ts` avec 85 questions supplémentaires dans `src/data/extra/level01-05.ts` ... `level26-30.ts`
+(agrégées par `src/data/index.ts`). Le format (`src/data/builder.ts`, type `Row`) permet d'en ajouter
+facilement si besoin.

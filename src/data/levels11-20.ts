@@ -1,4 +1,6 @@
 import { buildLevel, type Row } from './builder'
+import { level11Extra, level12Extra, level13Extra, level14Extra, level15Extra } from './extra/level11-15'
+import { level16Extra, level17Extra, level18Extra, level19Extra, level20Extra } from './extra/level16-20'
 
 const level11: Row[] = [
   ['Quel philosophe grec fut le maître d\'Alexandre le Grand ?', ['Aristote', 'Socrate', 'Platon'], 0, "Aristote fut le précepteur d'Alexandre le Grand à la cour de Macédoine."],
@@ -181,14 +183,14 @@ const level20: Row[] = [
 ]
 
 export const levels11to20 = [
-  buildLevel(11, 'Collégiens affûtés', 'Dès 13 ans : histoire, sciences et philosophie de base.', level11),
-  buildLevel(12, 'Esprits curieux', 'Culture générale collège : arts, sciences, histoire.', level12),
-  buildLevel(13, 'Voyageurs du temps', 'Moyen Âge et Renaissance.', level13),
-  buildLevel(14, 'Experts du globe', 'Géographie économique et mondiale.', level14),
-  buildLevel(15, 'Amateurs d\'art', 'Littérature et arts classiques.', level15),
-  buildLevel(16, 'Lycéens avertis', 'Philosophie, histoire du XXe siècle.', level16),
-  buildLevel(17, 'Têtes chercheuses', 'Sciences physiques et chimie avancées.', level17),
-  buildLevel(18, 'Lettrés et économistes', 'Littérature, économie et institutions.', level18),
-  buildLevel(19, 'Historiens du monde', 'Histoire contemporaine et géopolitique.', level19),
-  buildLevel(20, 'Bacheliers de la culture', 'Culture générale niveau baccalauréat.', level20),
+  buildLevel(11, 'Collégiens affûtés', 'Dès 13 ans : histoire, sciences et philosophie de base.', [...level11, ...level11Extra]),
+  buildLevel(12, 'Esprits curieux', 'Culture générale collège : arts, sciences, histoire.', [...level12, ...level12Extra]),
+  buildLevel(13, 'Voyageurs du temps', 'Moyen Âge et Renaissance.', [...level13, ...level13Extra]),
+  buildLevel(14, 'Experts du globe', 'Géographie économique et mondiale.', [...level14, ...level14Extra]),
+  buildLevel(15, 'Amateurs d\'art', 'Littérature et arts classiques.', [...level15, ...level15Extra]),
+  buildLevel(16, 'Lycéens avertis', 'Philosophie, histoire du XXe siècle.', [...level16, ...level16Extra]),
+  buildLevel(17, 'Têtes chercheuses', 'Sciences physiques et chimie avancées.', [...level17, ...level17Extra]),
+  buildLevel(18, 'Lettrés et économistes', 'Littérature, économie et institutions.', [...level18, ...level18Extra]),
+  buildLevel(19, 'Historiens du monde', 'Histoire contemporaine et géopolitique.', [...level19, ...level19Extra]),
+  buildLevel(20, 'Bacheliers de la culture', 'Culture générale niveau baccalauréat.', [...level20, ...level20Extra]),
 ]

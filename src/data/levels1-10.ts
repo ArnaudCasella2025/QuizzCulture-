@@ -1,4 +1,6 @@
 import { buildLevel, type Row } from './builder'
+import { level1Extra, level2Extra, level3Extra, level4Extra, level5Extra } from './extra/level01-05'
+import { level6Extra, level7Extra, level8Extra, level9Extra, level10Extra } from './extra/level06-10'
 
 const level1: Row[] = [
   ['De quelle couleur est le ciel par une belle journée ?', ['Bleu', 'Vert', 'Rouge'], 0, "Le ciel paraît bleu à cause de la façon dont l'atmosphère diffuse la lumière du soleil."],
@@ -181,14 +183,14 @@ const level10: Row[] = [
 ]
 
 export const levels1to10 = [
-  buildLevel(1, 'Petits curieux', 'Pour les tout-petits (dès 3 ans) : couleurs, animaux, formes.', level1),
-  buildLevel(2, 'Apprentis malins', 'Dès 4 ans : animaux, chiffres, fruits et légumes.', level2),
-  buildLevel(3, 'Explorateurs en herbe', 'Dès 5 ans : jours de la semaine, corps humain, couleurs.', level3),
-  buildLevel(4, 'Petits génies', 'Dès 6 ans : alphabet, saisons, calculs simples.', level4),
-  buildLevel(5, 'Aventuriers du monde', 'Dès 7 ans : géographie simple, drapeaux, animaux du monde.', level5),
-  buildLevel(6, 'Savants en herbe', 'Dès 8 ans : sciences, histoire et espace.', level6),
-  buildLevel(7, 'Globe-trotters', 'Dès 9 ans : géographie de la France et sciences.', level7),
-  buildLevel(8, 'Historiens juniors', 'Dès 10 ans : histoire de France et du monde.', level8),
-  buildLevel(9, 'Citoyens du monde', 'Dès 11 ans : géographie mondiale et sciences.', level9),
-  buildLevel(10, 'Cracks du collège', 'Dès 12 ans : culture générale variée, fin du primaire.', level10),
+  buildLevel(1, 'Petits curieux', 'Pour les tout-petits (dès 3 ans) : couleurs, animaux, formes.', [...level1, ...level1Extra]),
+  buildLevel(2, 'Apprentis malins', 'Dès 4 ans : animaux, chiffres, fruits et légumes.', [...level2, ...level2Extra]),
+  buildLevel(3, 'Explorateurs en herbe', 'Dès 5 ans : jours de la semaine, corps humain, couleurs.', [...level3, ...level3Extra]),
+  buildLevel(4, 'Petits génies', 'Dès 6 ans : alphabet, saisons, calculs simples.', [...level4, ...level4Extra]),
+  buildLevel(5, 'Aventuriers du monde', 'Dès 7 ans : géographie simple, drapeaux, animaux du monde.', [...level5, ...level5Extra]),
+  buildLevel(6, 'Savants en herbe', 'Dès 8 ans : sciences, histoire et espace.', [...level6, ...level6Extra]),
+  buildLevel(7, 'Globe-trotters', 'Dès 9 ans : géographie de la France et sciences.', [...level7, ...level7Extra]),
+  buildLevel(8, 'Historiens juniors', 'Dès 10 ans : histoire de France et du monde.', [...level8, ...level8Extra]),
+  buildLevel(9, 'Citoyens du monde', 'Dès 11 ans : géographie mondiale et sciences.', [...level9, ...level9Extra]),
+  buildLevel(10, 'Cracks du collège', 'Dès 12 ans : culture générale variée, fin du primaire.', [...level10, ...level10Extra]),
 ]

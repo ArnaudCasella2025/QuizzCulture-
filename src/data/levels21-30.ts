@@ -1,4 +1,6 @@
 import { buildLevel, type Row } from './builder'
+import { level21Extra, level22Extra, level23Extra, level24Extra, level25Extra } from './extra/level21-25'
+import { level26Extra, level27Extra, level28Extra, level29Extra, level30Extra } from './extra/level26-30'
 
 const level21: Row[] = [
   ['Quel compositeur allemand a écrit l\'opéra "Tristan und Isolde" et est connu pour son "leitmotiv" ?', ['Richard Wagner', 'Johannes Brahms', 'Richard Strauss'], 0, "Richard Wagner a composé cet opéra romantique achevé en 1859."],
@@ -181,14 +183,14 @@ const level30: Row[] = [
 ]
 
 export const levels21to30 = [
-  buildLevel(21, 'Érudits confirmés', 'Culture générale avancée : histoire, sciences, arts.', level21),
-  buildLevel(22, 'Grands lettrés', 'Philosophie, économie et histoire mondiale.', level22),
-  buildLevel(23, 'Maîtres du savoir', 'Histoire, sciences et pensée politique.', level23),
-  buildLevel(24, 'Références vivantes', 'Sciences avancées et géopolitique.', level24),
-  buildLevel(25, 'Sommités', 'Philosophie, physique et économie de pointe.', level25),
-  buildLevel(26, 'Encyclopédistes', 'Histoire religieuse, mathématiques et philosophie.', level26),
-  buildLevel(27, 'Virtuoses du savoir', 'Histoire diplomatique et pensée moderne.', level27),
-  buildLevel(28, 'Archivistes du monde', 'Histoire militaire, économie et sciences.', level28),
-  buildLevel(29, 'Grands maîtres', 'Antiquité, philosophie et théorie économique.', level29),
-  buildLevel(30, 'Experts absolus', 'Le niveau ultime de la culture générale.', level30),
+  buildLevel(21, 'Érudits confirmés', 'Culture générale avancée : histoire, sciences, arts.', [...level21, ...level21Extra]),
+  buildLevel(22, 'Grands lettrés', 'Philosophie, économie et histoire mondiale.', [...level22, ...level22Extra]),
+  buildLevel(23, 'Maîtres du savoir', 'Histoire, sciences et pensée politique.', [...level23, ...level23Extra]),
+  buildLevel(24, 'Références vivantes', 'Sciences avancées et géopolitique.', [...level24, ...level24Extra]),
+  buildLevel(25, 'Sommités', 'Philosophie, physique et économie de pointe.', [...level25, ...level25Extra]),
+  buildLevel(26, 'Encyclopédistes', 'Histoire religieuse, mathématiques et philosophie.', [...level26, ...level26Extra]),
+  buildLevel(27, 'Virtuoses du savoir', 'Histoire diplomatique et pensée moderne.', [...level27, ...level27Extra]),
+  buildLevel(28, 'Archivistes du monde', 'Histoire militaire, économie et sciences.', [...level28, ...level28Extra]),
+  buildLevel(29, 'Grands maîtres', 'Antiquité, philosophie et théorie économique.', [...level29, ...level29Extra]),
+  buildLevel(30, 'Experts absolus', 'Le niveau ultime de la culture générale.', [...level30, ...level30Extra]),
 ]
