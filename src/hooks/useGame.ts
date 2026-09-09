@@ -4,6 +4,7 @@ import { getLevel, MAX_LEVEL } from '../data'
 
 const STORAGE_KEY = 'quizzculture-state-v1'
 const STREAK_TO_LEVEL_UP = 10
+const MIN_LEVEL = 1
 
 function shuffleOptions(question: Question): Question {
   const order = [0, 1, 2]
@@ -25,7 +26,56 @@ function pickQuestion(player: Player) {
 }
 
 function makePlayer(id: string, name: string, level: number): Player {
-  return { id, name, level, streak: 0, score: 0, answered: 0, askedQuestionIds: [] }
+  return { id, name, level, streak: 0, hasCorrectAtLevel: false, score: 0, answered: 0, askedQuestionIds: [] }
+}
+
+interface AnswerOutcome {
+  player: Player
+  leveledUp: boolean
+  leveledDown: boolean
+}
+
+function applyAnswer(player: Player, correct: boolean): AnswerOutcome {
+  const answered = player.answered + 1
+
+  if (correct) {
+    const nextStreak = player.streak + 1
+    if (nextStreak >= STREAK_TO_LEVEL_UP && player.level < MAX_LEVEL) {
+      return {
+        player: { ...player, level: player.level + 1, streak: 0, hasCorrectAtLevel: false, score: player.score + 1, answered },
+        leveledUp: true,
+        leveledDown: false,
+      }
+    }
+    return {
+      player: { ...player, streak: nextStreak, hasCorrectAtLevel: true, score: player.score + 1, answered },
+      leveledUp: false,
+      leveledDown: false,
+    }
+  }
+
+  const nextStreak = player.streak - 1
+  if (nextStreak < 0) {
+    const canDemote = player.level > MIN_LEVEL && player.hasCorrectAtLevel
+    if (canDemote) {
+      return {
+        player: { ...player, level: player.level - 1, streak: 0, hasCorrectAtLevel: false, answered },
+        leveledUp: false,
+        leveledDown: true,
+      }
+    }
+    return {
+      player: { ...player, streak: 0, answered },
+      leveledUp: false,
+      leveledDown: false,
+    }
+  }
+
+  return {
+    player: { ...player, streak: nextStreak, answered },
+    leveledUp: false,
+    leveledDown: false,
+  }
 }
 
 const initialState: GameState = {
@@ -35,6 +85,7 @@ const initialState: GameState = {
   phase: 'setup',
   lastResult: null,
   leveledUp: false,
+  leveledDown: false,
 }
 
 export function useGame() {
@@ -45,7 +96,7 @@ export function useGame() {
         const parsed = JSON.parse(raw) as GameState
         if (parsed.phase === 'playing' && parsed.players.length > 0) {
           const current = parsed.players[parsed.currentPlayerIndex]
-          return { ...parsed, currentQuestion: pickQuestion(current), lastResult: null, leveledUp: false }
+          return { ...parsed, currentQuestion: pickQuestion(current), lastResult: null, leveledUp: false, leveledDown: false }
         }
         if (parsed.phase === 'finished') {
           return { ...parsed, currentQuestion: null }
@@ -75,6 +126,7 @@ export function useGame() {
       phase: 'playing',
       lastResult: null,
       leveledUp: false,
+      leveledDown: false,
     })
   }, [])
 
@@ -82,26 +134,22 @@ export function useGame() {
     setState((prev) => {
       if (!prev.currentQuestion || prev.phase !== 'playing') return prev
       const correct = choiceIndex === prev.currentQuestion.correctIndex
+      let leveledUp = false
+      let leveledDown = false
       const players = prev.players.map((p, i) => {
         if (i !== prev.currentPlayerIndex) return p
         const askedQuestionIds = [...p.askedQuestionIds, prev.currentQuestion!.id]
-        const streak = correct ? p.streak + 1 : 0
-        const willLevelUp = correct && streak >= STREAK_TO_LEVEL_UP && p.level < MAX_LEVEL
-        return {
-          ...p,
-          score: correct ? p.score + 1 : p.score,
-          answered: p.answered + 1,
-          askedQuestionIds,
-          streak: willLevelUp ? 0 : streak,
-          level: willLevelUp ? p.level + 1 : p.level,
-        }
+        const outcome = applyAnswer({ ...p, askedQuestionIds }, correct)
+        leveledUp = outcome.leveledUp
+        leveledDown = outcome.leveledDown
+        return outcome.player
       })
-      const leveledUp = correct && players[prev.currentPlayerIndex].level > prev.players[prev.currentPlayerIndex].level
       return {
         ...prev,
         players,
         lastResult: (correct ? 'correct' : 'wrong') as AnswerResult,
         leveledUp,
+        leveledDown,
       }
     })
   }, [])
@@ -116,6 +164,7 @@ export function useGame() {
         currentQuestion: pickQuestion(nextPlayer),
         lastResult: null,
         leveledUp: false,
+        leveledDown: false,
       }
     })
   }, [])

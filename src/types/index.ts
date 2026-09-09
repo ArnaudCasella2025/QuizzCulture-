@@ -18,6 +18,7 @@ export interface Player {
   name: string
   level: number
   streak: number
+  hasCorrectAtLevel: boolean
   score: number
   answered: number
   askedQuestionIds: string[]
@@ -32,4 +33,5 @@ export interface GameState {
   phase: 'setup' | 'playing' | 'finished'
   lastResult: AnswerResult
   leveledUp: boolean
+  leveledDown: boolean
 }

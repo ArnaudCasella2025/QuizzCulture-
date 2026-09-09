@@ -131,6 +131,7 @@ export default function GameScreen({ state, onAnswer, onNext, onEnd }: Props) {
             <p className="font-bold mb-1">
               {state.lastResult === 'correct' ? '✅ Bonne réponse !' : '❌ Mauvaise réponse'}
               {state.leveledUp && <span className="text-yellow-300"> · Niveau supérieur débloqué 🎉</span>}
+              {state.leveledDown && <span className="text-orange-300"> · Niveau inférieur ⬇️</span>}
             </p>
             <p className="text-sm text-slate-300">{question.explanation}</p>
             <button
