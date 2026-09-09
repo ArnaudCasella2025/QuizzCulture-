@@ -1,6 +1,7 @@
 import { useState } from 'react'
 import type { GameState } from '../types'
 import { MAX_LEVEL, getLevel } from '../data'
+import LevelUpModal from './LevelUpModal'
 
 interface Props {
   state: GameState
@@ -15,6 +16,7 @@ export default function GameScreen({ state, onAnswer, onNext, onEnd }: Props) {
   const [confirmEnd, setConfirmEnd] = useState(false)
   const [chosenIndex, setChosenIndex] = useState<number | null>(null)
   const [trackedQuestionId, setTrackedQuestionId] = useState<string | null>(null)
+  const [levelUpDismissed, setLevelUpDismissed] = useState(false)
   const player = state.players[state.currentPlayerIndex]
   const question = state.currentQuestion
   const answered = state.lastResult !== null
@@ -22,9 +24,12 @@ export default function GameScreen({ state, onAnswer, onNext, onEnd }: Props) {
   if (question && question.id !== trackedQuestionId) {
     setTrackedQuestionId(question.id)
     setChosenIndex(null)
+    setLevelUpDismissed(false)
   }
 
   if (!player || !question) return null
+
+  const showLevelUpModal = state.leveledUp && !levelUpDismissed
 
   function handleAnswer(i: number) {
     setChosenIndex(i)
@@ -138,6 +143,15 @@ export default function GameScreen({ state, onAnswer, onNext, onEnd }: Props) {
           </div>
         )}
       </div>
+
+      {showLevelUpModal && (
+        <LevelUpModal
+          playerName={player.name}
+          level={player.level}
+          levelName={levelData.name}
+          onClose={() => setLevelUpDismissed(true)}
+        />
+      )}
 
       {confirmEnd && (
         <div className="fixed inset-0 bg-black/70 flex items-center justify-center px-6 z-10">

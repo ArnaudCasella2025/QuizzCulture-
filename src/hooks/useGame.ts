@@ -1,15 +1,27 @@
 import { useCallback, useEffect, useState } from 'react'
-import type { AnswerResult, GameState, Player } from '../types'
+import type { AnswerResult, GameState, Player, Question } from '../types'
 import { getLevel, MAX_LEVEL } from '../data'
 
 const STORAGE_KEY = 'quizzculture-state-v1'
 const STREAK_TO_LEVEL_UP = 10
 
+function shuffleOptions(question: Question): Question {
+  const order = [0, 1, 2]
+  for (let i = order.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1))
+    ;[order[i], order[j]] = [order[j], order[i]]
+  }
+  const options = order.map((i) => question.options[i]) as [string, string, string]
+  const correctIndex = order.indexOf(question.correctIndex) as 0 | 1 | 2
+  return { ...question, options, correctIndex }
+}
+
 function pickQuestion(player: Player) {
   const levelData = getLevel(player.level)
   const unseen = levelData.questions.filter((q) => !player.askedQuestionIds.includes(q.id))
   const pool = unseen.length > 0 ? unseen : levelData.questions
-  return pool[Math.floor(Math.random() * pool.length)]
+  const question = pool[Math.floor(Math.random() * pool.length)]
+  return shuffleOptions(question)
 }
 
 function makePlayer(id: string, name: string, level: number): Player {
