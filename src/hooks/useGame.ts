@@ -35,20 +35,20 @@ interface AnswerOutcome {
   leveledDown: boolean
 }
 
-function applyAnswer(player: Player, correct: boolean): AnswerOutcome {
+function applyAnswer(player: Player, correct: boolean, points: number): AnswerOutcome {
   const answered = player.answered + 1
 
   if (correct) {
     const nextStreak = player.streak + 1
     if (nextStreak >= STREAK_TO_LEVEL_UP && player.level < MAX_LEVEL) {
       return {
-        player: { ...player, level: player.level + 1, streak: 0, hasCorrectAtLevel: false, score: player.score + 1, answered },
+        player: { ...player, level: player.level + 1, streak: 0, hasCorrectAtLevel: false, score: player.score + points, answered },
         leveledUp: true,
         leveledDown: false,
       }
     }
     return {
-      player: { ...player, streak: nextStreak, hasCorrectAtLevel: true, score: player.score + 1, answered },
+      player: { ...player, streak: nextStreak, hasCorrectAtLevel: true, score: player.score + points, answered },
       leveledUp: false,
       leveledDown: false,
     }
@@ -130,7 +130,7 @@ export function useGame() {
     })
   }, [])
 
-  const answer = useCallback((choiceIndex: number) => {
+  const answer = useCallback((choiceIndex: number, points = 1) => {
     setState((prev) => {
       if (!prev.currentQuestion || prev.phase !== 'playing') return prev
       const correct = choiceIndex === prev.currentQuestion.correctIndex
@@ -139,7 +139,7 @@ export function useGame() {
       const players = prev.players.map((p, i) => {
         if (i !== prev.currentPlayerIndex) return p
         const askedQuestionIds = [...p.askedQuestionIds, prev.currentQuestion!.id]
-        const outcome = applyAnswer({ ...p, askedQuestionIds }, correct)
+        const outcome = applyAnswer({ ...p, askedQuestionIds }, correct, points)
         leveledUp = outcome.leveledUp
         leveledDown = outcome.leveledDown
         return outcome.player

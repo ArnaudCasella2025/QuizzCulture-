@@ -1,22 +1,29 @@
 import { useState } from 'react'
 import type { GameState } from '../types'
 import { MAX_LEVEL, getLevel } from '../data'
+import { isCorrectGuess } from '../utils/answerMatch'
 import LevelUpModal from './LevelUpModal'
 
 interface Props {
   state: GameState
-  onAnswer: (choiceIndex: number) => void
+  onAnswer: (choiceIndex: number, points?: number) => void
   onNext: () => void
   onEnd: () => void
 }
 
 const STREAK_TARGET = 10
+const GUESS_POINTS = 2
+const CHOICE_POINTS = 1
 
 export default function GameScreen({ state, onAnswer, onNext, onEnd }: Props) {
   const [confirmEnd, setConfirmEnd] = useState(false)
   const [chosenIndex, setChosenIndex] = useState<number | null>(null)
   const [trackedQuestionId, setTrackedQuestionId] = useState<string | null>(null)
   const [levelUpDismissed, setLevelUpDismissed] = useState(false)
+  const [guessPhase, setGuessPhase] = useState(true)
+  const [guessText, setGuessText] = useState('')
+  const [guessWasWrong, setGuessWasWrong] = useState(false)
+  const [wonByGuess, setWonByGuess] = useState(false)
   const player = state.players[state.currentPlayerIndex]
   const question = state.currentQuestion
   const answered = state.lastResult !== null
@@ -25,15 +32,31 @@ export default function GameScreen({ state, onAnswer, onNext, onEnd }: Props) {
     setTrackedQuestionId(question.id)
     setChosenIndex(null)
     setLevelUpDismissed(false)
+    setGuessPhase(true)
+    setGuessText('')
+    setGuessWasWrong(false)
+    setWonByGuess(false)
   }
 
   if (!player || !question) return null
 
   const showLevelUpModal = state.leveledUp && !levelUpDismissed
 
-  function handleAnswer(i: number) {
+  function handleAnswer(i: number, points = CHOICE_POINTS) {
     setChosenIndex(i)
-    onAnswer(i)
+    onAnswer(i, points)
+  }
+
+  function handleGuessSubmit(e: React.FormEvent) {
+    e.preventDefault()
+    if (!guessText.trim() || !question) return
+    if (isCorrectGuess(guessText, question.options[question.correctIndex])) {
+      setWonByGuess(true)
+      handleAnswer(question.correctIndex, GUESS_POINTS)
+    } else {
+      setGuessWasWrong(true)
+      setGuessPhase(false)
+    }
   }
 
   const levelData = getLevel(player.level)
@@ -93,6 +116,44 @@ export default function GameScreen({ state, onAnswer, onNext, onEnd }: Props) {
           <p className="text-xl font-bold leading-snug">{question.question}</p>
         </div>
 
+        {guessPhase && !answered && (
+          <form onSubmit={handleGuessSubmit} className="flex flex-col gap-3 mb-3">
+            <p className="text-xs text-slate-400">
+              Réponds sans les choix pour gagner {GUESS_POINTS} points au lieu de {CHOICE_POINTS} !
+            </p>
+            <input
+              type="text"
+              inputMode="text"
+              autoFocus
+              value={guessText}
+              onChange={(e) => setGuessText(e.target.value)}
+              placeholder="Ta réponse..."
+              className="w-full rounded-2xl border border-slate-700 bg-slate-800 px-4 py-3.5 text-base font-medium outline-none focus:border-indigo-400"
+            />
+            <div className="flex gap-3">
+              <button
+                type="button"
+                onClick={() => setGuessPhase(false)}
+                className="flex-1 rounded-xl bg-slate-700 py-3 font-semibold active:scale-[0.98] transition"
+              >
+                Je ne sais pas
+              </button>
+              <button
+                type="submit"
+                disabled={!guessText.trim()}
+                className="flex-1 rounded-xl bg-indigo-500 hover:bg-indigo-400 py-3 font-bold active:scale-[0.98] transition disabled:opacity-30"
+              >
+                Valider
+              </button>
+            </div>
+          </form>
+        )}
+
+        {(!guessPhase || answered) && (
+        <>
+        {guessWasWrong && !answered && (
+          <p className="text-xs text-slate-400 mb-2">Pas trouvé ? Choisis parmi les propositions :</p>
+        )}
         <div className="flex flex-col gap-3">
           {question.options.map((opt, i) => {
             const isCorrect = i === question.correctIndex
@@ -129,7 +190,11 @@ export default function GameScreen({ state, onAnswer, onNext, onEnd }: Props) {
             }`}
           >
             <p className="font-bold mb-1">
-              {state.lastResult === 'correct' ? '✅ Bonne réponse !' : '❌ Mauvaise réponse'}
+              {state.lastResult === 'correct'
+                ? wonByGuess
+                  ? `✅ Trouvé sans les choix ! +${GUESS_POINTS} points`
+                  : '✅ Bonne réponse !'
+                : '❌ Mauvaise réponse'}
               {state.leveledUp && <span className="text-yellow-300"> · Niveau supérieur débloqué 🎉</span>}
               {state.leveledDown && <span className="text-orange-300"> · Niveau inférieur ⬇️</span>}
             </p>
@@ -142,6 +207,8 @@ export default function GameScreen({ state, onAnswer, onNext, onEnd }: Props) {
               Joueur suivant →
             </button>
           </div>
+        )}
+        </>
         )}
       </div>
 
