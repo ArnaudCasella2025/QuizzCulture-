@@ -169,6 +169,45 @@ export function useGame() {
     })
   }, [])
 
+  const addPlayer = useCallback((name: string, level: number) => {
+    setState((prev) => {
+      if (prev.phase !== 'playing') return prev
+      const newPlayer = makePlayer(
+        `p${prev.players.length}-${Date.now()}`,
+        name.trim() || `Joueur ${prev.players.length + 1}`,
+        level,
+      )
+      return { ...prev, players: [...prev.players, newPlayer] }
+    })
+  }, [])
+
+  const removePlayer = useCallback((playerId: string) => {
+    setState((prev) => {
+      if (prev.phase !== 'playing' || prev.players.length <= 1) return prev
+      const removeIndex = prev.players.findIndex((p) => p.id === playerId)
+      if (removeIndex === -1) return prev
+
+      const players = prev.players.filter((p) => p.id !== playerId)
+
+      if (removeIndex === prev.currentPlayerIndex) {
+        const nextIndex = removeIndex % players.length
+        const nextPlayer = players[nextIndex]
+        return {
+          ...prev,
+          players,
+          currentPlayerIndex: nextIndex,
+          currentQuestion: pickQuestion(nextPlayer),
+          lastResult: null,
+          leveledUp: false,
+          leveledDown: false,
+        }
+      }
+
+      const currentPlayerIndex = removeIndex < prev.currentPlayerIndex ? prev.currentPlayerIndex - 1 : prev.currentPlayerIndex
+      return { ...prev, players, currentPlayerIndex }
+    })
+  }, [])
+
   const endGame = useCallback(() => {
     setState((prev) => ({ ...prev, phase: 'finished', currentQuestion: null }))
   }, [])
@@ -182,5 +221,5 @@ export function useGame() {
     setState(initialState)
   }, [])
 
-  return { state, startGame, answer, nextTurn, endGame, resetGame }
+  return { state, startGame, answer, nextTurn, addPlayer, removePlayer, endGame, resetGame }
 }

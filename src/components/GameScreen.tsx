@@ -3,11 +3,14 @@ import type { GameState } from '../types'
 import { MAX_LEVEL, getLevel } from '../data'
 import { isCorrectGuess } from '../utils/answerMatch'
 import LevelUpModal from './LevelUpModal'
+import ManagePlayersModal from './ManagePlayersModal'
 
 interface Props {
   state: GameState
   onAnswer: (choiceIndex: number, points?: number) => void
   onNext: () => void
+  onAddPlayer: (name: string, level: number) => void
+  onRemovePlayer: (playerId: string) => void
   onEnd: () => void
 }
 
@@ -15,8 +18,9 @@ const STREAK_TARGET = 10
 const GUESS_POINTS = 2
 const CHOICE_POINTS = 1
 
-export default function GameScreen({ state, onAnswer, onNext, onEnd }: Props) {
+export default function GameScreen({ state, onAnswer, onNext, onAddPlayer, onRemovePlayer, onEnd }: Props) {
   const [confirmEnd, setConfirmEnd] = useState(false)
+  const [managingPlayers, setManagingPlayers] = useState(false)
   const [chosenIndex, setChosenIndex] = useState<number | null>(null)
   const [trackedQuestionId, setTrackedQuestionId] = useState<string | null>(null)
   const [levelUpDismissed, setLevelUpDismissed] = useState(false)
@@ -69,9 +73,14 @@ export default function GameScreen({ state, onAnswer, onNext, onEnd }: Props) {
           <span>
             Tour de <strong className="text-slate-200">{player.name}</strong>
           </span>
-          <button type="button" onClick={() => setConfirmEnd(true)} className="underline decoration-dotted">
-            Terminer la partie
-          </button>
+          <div className="flex items-center gap-3">
+            <button type="button" onClick={() => setManagingPlayers(true)} className="underline decoration-dotted">
+              Joueurs
+            </button>
+            <button type="button" onClick={() => setConfirmEnd(true)} className="underline decoration-dotted">
+              Terminer la partie
+            </button>
+          </div>
         </div>
         <div className="flex gap-1.5 overflow-x-auto pb-1">
           {state.players.map((p, i) => (
@@ -218,6 +227,16 @@ export default function GameScreen({ state, onAnswer, onNext, onEnd }: Props) {
           level={player.level}
           levelName={levelData.name}
           onClose={() => setLevelUpDismissed(true)}
+        />
+      )}
+
+      {managingPlayers && (
+        <ManagePlayersModal
+          players={state.players}
+          currentPlayerIndex={state.currentPlayerIndex}
+          onAdd={onAddPlayer}
+          onRemove={onRemovePlayer}
+          onClose={() => setManagingPlayers(false)}
         />
       )}
 
