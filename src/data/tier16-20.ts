@@ -104,14 +104,14 @@ export const level16Questions: Row[] = [
   ["Quel organe de l'Union européenne détient le monopole de l'initiative législative ?", ["La Commission européenne", "Le Parlement européen", "Le Conseil européen"], 0, "Elle propose les textes de loi qui seront ensuite débattus et votés."],
 
   // Économie (3)
-  ["Quel indicateur mesure la variation moyenne des prix à la consommation, utilisé notamment pour suivre l'inflation ?", ["L'indice des prix à la consommation (IPC)", "Le PIB", "Le taux directeur"], 0, "Il sert de référence pour mesurer l'évolution du coût de la vie."],
+  ["Quel indicateur économique mensuel, calculé à partir d'un panier de biens et services représentatif, sert de référence officielle pour suivre l'évolution du coût de la vie ?", ["L'indice des prix à la consommation (IPC)", "Le PIB", "Le taux directeur"], 0, "Il sert de référence pour mesurer l'évolution du coût de la vie."],
   ["Quelle institution américaine fixe la politique monétaire des États-Unis ?", ["La Réserve fédérale (Fed)", "Le Trésor américain", "La SEC"], 0, "La Réserve fédérale (Fed) est la banque centrale des États-Unis, chargée de la politique monétaire."],
   ["Comment appelle-t-on la situation où une entreprise occupe seule un marché, sans concurrent significatif ?", ["Un monopole", "Un oligopole", "Une concurrence pure"], 0, "Un monopole peut fixer ses prix sans contrainte concurrentielle directe."],
 
   // Société (3)
   ["À quel âge la majorité électorale a-t-elle été fixée en France depuis 1974 ?", ["18 ans", "21 ans", "16 ans"], 0, "Elle a été abaissée de 21 à 18 ans sous la présidence de Valéry Giscard d'Estaing."],
-  ["Comment appelle-t-on l'écart de rémunération observé en moyenne entre hommes et femmes ?", ["L'écart salarial de genre", "Le plafond de verre", "La ségrégation professionnelle"], 0, "Il désigne la différence moyenne de salaire entre hommes et femmes."],
-  ["Comment appelle-t-on une ville dont l'économie dépend presque entièrement d'une seule entreprise ou industrie ?", ["Une ville mono-industrielle", "Une conurbation", "Une métropole"], 0, "Ce type de ville est très vulnérable à la fermeture de son activité principale."],
+  ["Quel indicateur économique et social reste, dans la plupart des pays développés, défavorable aux travailleuses malgré les lois sur l'égalité professionnelle ?", ["L'écart salarial de genre", "Le plafond de verre", "La ségrégation professionnelle"], 0, "Il désigne la différence moyenne de salaire entre hommes et femmes."],
+  ["Comment appelle-t-on une ville ou une région économiquement fragile car fortement spécialisée autour d'une activité dominante, menacée en cas de fermeture ?", ["Une ville mono-industrielle", "Une conurbation", "Une métropole"], 0, "Ce type de ville est très vulnérable à la fermeture de son activité principale."],
 
   // Philosophie (3)
   ["Quel philosophe grec est l'auteur de \"La République\" ?", ["Platon", "Aristote", "Socrate"], 0, "Il y développe notamment l'allégorie de la caverne."],
@@ -205,7 +205,7 @@ export const level17Questions: Row[] = [
   ["Quel économiste britannique du 20e siècle a préconisé l'intervention de l'État pour relancer l'économie en période de crise ?", ["John Maynard Keynes", "Adam Smith", "Milton Friedman"], 0, "Ses théories ont fortement influencé les politiques publiques après la crise de 1929."],
   ["Quel indicateur, compris entre 0 et 1, mesure les inégalités de revenus au sein d'un pays ?", ["Le coefficient de Gini", "L'indice de développement humain", "Le PIB par habitant"], 0, "Plus il se rapproche de 1, plus les inégalités sont fortes."],
   ["Quelle institution, née des accords de Bretton Woods en 1944, a pour mission de préserver la stabilité financière mondiale ?", ["Le Fonds monétaire international", "La Banque mondiale", "L'Organisation mondiale du commerce"], 0, "La Banque mondiale, née des mêmes accords, a un rôle différent axé sur le développement."],
-  ["Comment appelle-t-on une situation économique combinant stagnation de la croissance et forte inflation ?", ["La stagflation", "La récession", "La déflation"], 0, "Ce phénomène a notamment marqué les années 1970 après les chocs pétroliers."],
+  ["Comment appelle-t-on la situation économique inhabituelle, marquée notamment par les chocs pétroliers des années 1970, où les prix augmentent fortement alors que l'activité ralentit ?", ["La stagflation", "La récession", "La déflation"], 0, "Ce phénomène a notamment marqué les années 1970 après les chocs pétroliers."],
 
   // Nature & animaux (3)
   ["Quel est le seul mammifère capable de voler activement, et non simplement de planer ?", ["La chauve-souris", "L'écureuil volant", "Le phalanger volant"], 0, "Les écureuils et phalangers volants ne font que planer grâce à une membrane cutanée."],
@@ -279,7 +279,7 @@ export const level17Questions: Row[] = [
 
   // Société (3)
 ["Quel psychologue social américain théorisa en 1957 le concept de « dissonance cognitive », le malaise ressenti face à des croyances contradictoires ?", ["Leon Festinger", "Stanley Milgram", "Solomon Asch"], 0, "Festinger a montré que les individus modifient souvent leurs croyances plutôt que leurs comportements pour réduire cette dissonance."],
-  ["Quel terme désigne la discrimination fondée sur l'âge, en particulier envers les personnes âgées ?", ["L'âgisme", "Le validisme", "Le classisme"], 0, "Ce terme a été popularisé aux États-Unis à la fin des années 1960."],
+  ["Quel terme désigne les préjugés et discriminations subis par des personnes jugées trop vieilles ou trop jeunes pour un emploi ou un rôle social ?", ["L'âgisme", "Le validisme", "Le classisme"], 0, "Ce terme a été popularisé aux États-Unis à la fin des années 1960."],
   ["Quel sociologue français est connu pour ses travaux sur la distinction sociale et le \"capital culturel\" ?", ["Pierre Bourdieu", "Émile Durkheim", "Raymond Aron"], 0, "Son ouvrage \"La Distinction\" paraît en 1979."],
 
   // Inventions & découvertes (3)
