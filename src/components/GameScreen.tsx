@@ -1,9 +1,10 @@
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import type { GameState } from '../types'
 import { MAX_LEVEL, getLevel } from '../data'
 import { isCorrectGuess } from '../utils/answerMatch'
 import LevelUpModal from './LevelUpModal'
 import ManagePlayersModal from './ManagePlayersModal'
+import TurnTransition from './TurnTransition'
 
 interface Props {
   state: GameState
@@ -28,6 +29,8 @@ export default function GameScreen({ state, onAnswer, onNext, onAddPlayer, onRem
   const [guessText, setGuessText] = useState('')
   const [guessWasWrong, setGuessWasWrong] = useState(false)
   const [wonByGuess, setWonByGuess] = useState(false)
+  const [showTurnTransition, setShowTurnTransition] = useState(false)
+  const prevPlayerIdRef = useRef<string | null>(null)
   const player = state.players[state.currentPlayerIndex]
   const question = state.currentQuestion
   const answered = state.lastResult !== null
@@ -41,6 +44,14 @@ export default function GameScreen({ state, onAnswer, onNext, onAddPlayer, onRem
     setGuessWasWrong(false)
     setWonByGuess(false)
   }
+
+  useEffect(() => {
+    if (!player) return
+    if (prevPlayerIdRef.current !== null && prevPlayerIdRef.current !== player.id) {
+      setShowTurnTransition(true)
+    }
+    prevPlayerIdRef.current = player.id
+  }, [player?.id])
 
   if (!player || !question) return null
 
@@ -220,6 +231,15 @@ export default function GameScreen({ state, onAnswer, onNext, onAddPlayer, onRem
         </>
         )}
       </div>
+
+      {showTurnTransition && (
+        <TurnTransition
+          playerName={player.name}
+          level={player.level}
+          levelName={levelData.name}
+          onDone={() => setShowTurnTransition(false)}
+        />
+      )}
 
       {showLevelUpModal && (
         <LevelUpModal
