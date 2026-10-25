@@ -1,0 +1,12 @@
+{
+  "name": "QuizzCulture",
+  "short_name": "QuizzCulture",
+  "description": "Le jeu de culture générale multijoueur, 30 niveaux de difficulté.",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#0f172a",
+  "theme_color": "#4338ca",
+  "icons": [
+    { "src": "favicon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
